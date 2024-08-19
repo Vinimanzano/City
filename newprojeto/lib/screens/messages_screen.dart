@@ -23,11 +23,10 @@ class MessagesScreen extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 20),
-              // Adiciona uma lista fictícia de atualizações
               Expanded(
                 child: ListView(
                   children: List.generate(
-                    5,
+                    3,
                     (index) => ListTile(
                       leading: Icon(Icons.update, color: Colors.blue),
                       title: Text('Atualização ${index + 1}'),

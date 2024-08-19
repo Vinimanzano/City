@@ -17,6 +17,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final _passwordController = TextEditingController();
   bool _hasUnsavedChanges = false;
 
+  @override
+  void initState() {
+    super.initState();
+    _nameController.text = 'Nome do Usuário';
+  }
+
   Future<void> _pickMedia() async {
     final XFile? pickedFile = await showDialog<XFile>(
       context: context,
@@ -51,7 +57,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       setState(() {
         if (pickedFile.path.endsWith('.mp4')) {
           _videoFile = File(pickedFile.path);
-          _videoController?.dispose(); // Dispose previous video controller
+          _videoController?.dispose();
           _videoController = VideoPlayerController.file(_videoFile!)
             ..initialize().then((_) {
               setState(() {});
@@ -59,8 +65,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             });
         } else {
           _imageFile = File(pickedFile.path);
-          _videoFile = null; // Clear video file if an image is chosen
-          _videoController?.dispose(); // Dispose video controller if image is chosen
+          _videoFile = null;
+          _videoController?.dispose();
           _videoController = null;
         }
         _hasUnsavedChanges = true;
@@ -148,7 +154,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ) ?? false;
 
       if (shouldSave) {
-        // Simule o salvamento das alterações
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Alterações salvas com sucesso!')),
         );
@@ -184,7 +189,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                // Foto do perfil
                 CircleAvatar(
                   radius: 50,
                   backgroundImage: _imageFile != null
@@ -212,7 +216,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 else
                   Container(),
                 SizedBox(height: 20),
-                // Campos para alteração de nome e senha
                 TextField(
                   controller: _nameController,
                   decoration: InputDecoration(
@@ -235,7 +238,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 ),
                 SizedBox(height: 20),
-                // Botão para salvar alterações
                 ElevatedButton(
                   onPressed: _onSave,
                   child: Text('Salvar'),

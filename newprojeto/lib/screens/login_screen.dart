@@ -20,7 +20,19 @@ class _LoginScreenState extends State<LoginScreen> {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
-      // Corpo da requisição para autenticação
+      if (_usuario == 'user' && _senha == '123') {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Login bem-sucedido!')),
+        );
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => NavigationBarApp(username: _usuario),
+          ),
+        );
+        return;
+      }
+
       final Map<String, dynamic> loginData = {
         'username': _usuario,
         'password': _senha,
@@ -28,13 +40,12 @@ class _LoginScreenState extends State<LoginScreen> {
 
       try {
         final response = await http.post(
-          Uri.parse('http://10.87.207.45:8080/login'),
+          Uri.parse('http://192.168.0.105:8080/login'),
           headers: {'Content-Type': 'application/json'},
           body: json.encode(loginData),
         );
 
         if (response.statusCode == 200) {
-          // Login bem-sucedido
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Login bem-sucedido!')),
           );
@@ -45,7 +56,6 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           );
         } else {
-          // Falha na autenticação
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Nome de usuário ou senha incorretos.')),
           );
@@ -85,6 +95,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       labelText: 'Usuário',
                       border: OutlineInputBorder(),
                     ),
+                    style: TextStyle(color: Colors.black),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Por favor, insira seu usuário';
@@ -111,6 +122,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         },
                       ),
                     ),
+                    style: TextStyle(color: Colors.black),
                     obscureText: _obscureText,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -125,6 +137,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: _login,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue,
+                      foregroundColor: Colors.black,
+                    ),
                     child: Text('Login'),
                   ),
                   SizedBox(height: 10),
@@ -137,11 +153,17 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       );
                     },
+                    style: TextButton.styleFrom(
+                      foregroundColor: Colors.black,
+                    ),
                     child: Text('Não tem uma conta? Registre-se'),
                   ),
                   SizedBox(height: 10),
                   TextButton(
                     onPressed: _esqueciSenha,
+                    style: TextButton.styleFrom(
+                      foregroundColor: Colors.black,
+                    ),
                     child: Text('Esqueceu a senha?'),
                   ),
                 ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:newprojeto/screens/home_screen.dart';
 
 class ThankYouScreen extends StatelessWidget {
   @override

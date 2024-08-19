@@ -24,12 +24,6 @@ class _NavigationBarAppState extends State<NavigationBarApp> {
   ];
 
   Future<bool> _checkForUnsavedChanges() async {
-    final currentPage = _pages[_selectedIndex];
-
-    if (currentPage is WillPopScope) {
-      final willPop = await currentPage.onWillPop?.call() ?? true;
-      return willPop;
-    }
     return true;
   }
 
@@ -49,7 +43,7 @@ class _NavigationBarAppState extends State<NavigationBarApp> {
   void _confirmLogout() {
     showDialog(
       context: context,
-      barrierDismissible: false, // Prevents dismissal by tapping outside the dialog
+      barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text('Confirmar Saída'),
@@ -58,13 +52,13 @@ class _NavigationBarAppState extends State<NavigationBarApp> {
             TextButton(
               child: Text('Cancelar'),
               onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
+                Navigator.of(context).pop();
               },
             ),
             TextButton(
               child: Text('Sair'),
               onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
+                Navigator.of(context).pop();
                 _logout();
               },
             ),
@@ -137,7 +131,7 @@ class HomeScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
-            'Bem-vindo(a)',
+            'Bem-vindo(a) ${username}',
             style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,

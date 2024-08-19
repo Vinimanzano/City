@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'bairros_screen.dart';
-import 'navigation_bar_app.dart';
-import 'home_screen.dart';
-import 'thank_you_screen.dart';
-import 'os_screen.dart';
+import 'package:newprojeto/screens/bairros_screen.dart';
+import '../screens/home_screen.dart';
+import '../screens/navigation_bar_app.dart';
+import '../screens/home_screen.dart';
+import '../screens/thank_you_screen.dart';
+import '../screens/os_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -19,6 +20,8 @@ class MyApp extends StatelessWidget {
         '/home_screen': (context) => MyApp(),
         '/thank_you': (context) => ThankYouScreen(),
         '/os_screen': (context) => OsScreen(bairro: 'Exemplo'),
+        '/bairros_screen': (context) => BairrosScreen(),
+        '/navigation_bar': (context) => NavigationBarApp(username: 'Usuário'),
       },
     );
   }

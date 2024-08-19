@@ -9,6 +9,7 @@ class BairrosScreen extends StatefulWidget {
 
 class _BairrosScreenState extends State<BairrosScreen> {
   late Future<List<Map<String, dynamic>>> _bairrosFuture;
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -30,11 +31,9 @@ class _BairrosScreenState extends State<BairrosScreen> {
       'Vila Vitória', 'Vila Yeda'
     ];
 
-    // Inicializa o DatabaseHelper e popula os bairros
     final dbHelper = DatabaseHelper();
     dbHelper.initializeBairros(bairros);
 
-    // Atualiza a lista de bairros
     _bairrosFuture = dbHelper.getBairros();
   }
 
@@ -55,25 +54,49 @@ class _BairrosScreenState extends State<BairrosScreen> {
             return Center(child: Text('Nenhum bairro encontrado'));
           } else {
             final bairros = snapshot.data!;
-            return ListView.builder(
-              itemCount: bairros.length,
-              itemBuilder: (context, index) {
-                final bairro = bairros[index];
-                return ListTile(
-                  title: Text(bairro['nome']),
-                  onTap: () {
-                    // Navega para a tela OsScreen e passa o nome do bairro
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => OsScreen(
-                          bairro: bairro['nome'],
+            return Scrollbar(
+              controller: _scrollController,
+              child: ListView.builder(
+                controller: _scrollController,
+                itemCount: bairros.length,
+                itemBuilder: (context, index) {
+                  final bairro = bairros[index];
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => OsScreen(bairro: bairro['nome']),
+                          ),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blueAccent,
+                        padding: EdgeInsets.symmetric(vertical: 12.0),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0),
                         ),
+                        elevation: 5,
                       ),
-                    );
-                  },
-                );
-              },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            bairro['nome'],
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
             );
           }
         },

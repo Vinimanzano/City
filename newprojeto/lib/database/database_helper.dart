@@ -21,7 +21,7 @@ class DatabaseHelper {
     final path = join(await getDatabasesPath(), 'app_database.db');
     return await openDatabase(
       path,
-      version: 2, // Atualize a versão do banco de dados
+      version: 2,
       onCreate: _onCreate,
       onUpgrade: _onUpgrade,
     );
