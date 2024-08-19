@@ -1,0 +1,34 @@
+Banco de Dados
+- Tabela para Usuário;
+- Tabela para Funcionários;
+- Tabela para Email e senhas;
+- Tabela para Ocorrências;
+
+
+Dados das Tabelas
+	Tabela para Usuários
+	- id;
+	- nome;
+	- role;
+	- chave estrangeira conta[];
+	
+	Tabela para Funcionários;
+	- id;
+	- nome;
+	- role;
+	- chave estrangeira conta[];
+
+	Tabela para Email e senhas
+	- id;
+	- email;
+	- senha;
+	- id_responsavel;
+
+	Tabela de Ocorrencias
+	- id;
+	- descricao;
+	- endereco;
+	- data;
+	- hora;
+	- status;
+	- id_usuario;
