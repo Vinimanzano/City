@@ -36,7 +36,7 @@ class _RegistrarState extends State<Registrar> {
 
       try {
         final response = await http.post(
-          Uri.parse('http://192.168.x.xxx:8080/usuario'),
+          Uri.parse('http://10.87.207.4:8080/usuario'),
           headers: {'Content-Type': 'application/json'},
           body: json.encode(userData),
         );
