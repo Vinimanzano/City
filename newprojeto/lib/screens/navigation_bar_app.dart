@@ -17,13 +17,14 @@ class _NavigationBarAppState extends State<NavigationBarApp> {
   int _selectedIndex = 0;
 
   final List<Widget> _pages = [
-    HomeScreen(username: ''),
+    HomeScreen(username: 'User'),
     BairrosScreen(),
     ProfileScreen(),
     MessagesScreen(),
   ];
 
   Future<bool> _checkForUnsavedChanges() async {
+    // Implementação para verificar se há alterações não salvas
     return true;
   }
 
@@ -81,37 +82,40 @@ class _NavigationBarAppState extends State<NavigationBarApp> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final brightness = theme.brightness;
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Bem-vindo, ${widget.username}'),
       ),
       body: _pages[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
+        items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home, color: Colors.black),
+            icon: Icon(Icons.home),
             label: 'Início',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.location_city, color: Colors.black),
+            icon: Icon(Icons.location_city),
             label: 'Bairros',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person, color: Colors.black),
+            icon: Icon(Icons.person),
             label: 'Perfil',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.message, color: Colors.black),
+            icon: Icon(Icons.message),
             label: 'Mensagens',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.logout, color: Colors.black),
+            icon: Icon(Icons.logout),
             label: 'Sair',
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.black,
-        unselectedItemColor: Colors.grey,
+        selectedItemColor: brightness == Brightness.dark ? Colors.white : Colors.black,
+        unselectedItemColor: brightness == Brightness.dark ? Colors.grey : Colors.black54,
         onTap: _onItemTapped,
       ),
     );
@@ -131,7 +135,7 @@ class HomeScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
-            'Bem-vindo(a) ${username}',
+            'Bem-vindo(a) $username',
             style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,

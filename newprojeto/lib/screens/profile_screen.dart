@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:video_player/video_player.dart';
+import 'package:adaptive_theme/adaptive_theme.dart'; // Adicione esta importação
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -174,6 +175,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
+  void _toggleTheme() {
+    final currentMode = AdaptiveTheme.of(context).mode;
+    if (currentMode.isDark) {
+      AdaptiveTheme.of(context).setLight();
+    } else {
+      AdaptiveTheme.of(context).setDark();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -181,6 +191,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
       child: Scaffold(
         appBar: AppBar(
           title: Text('Perfil'),
+          actions: [
+            IconButton(
+              icon: Icon(Icons.brightness_6),
+              onPressed: _toggleTheme,
+            ),
+          ],
         ),
         body: SingleChildScrollView(
           child: Padding(

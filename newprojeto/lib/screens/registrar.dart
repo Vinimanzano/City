@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:newprojeto/main.dart';
 
 class Registrar extends StatefulWidget {
+  final VoidCallback onToggleTheme;
+
+  const Registrar({required this.onToggleTheme, Key? key}) : super(key: key);
+
   @override
   _RegistrarState createState() => _RegistrarState();
 }
@@ -48,9 +51,7 @@ class _RegistrarState extends State<Registrar> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Usuário $_username registrado com sucesso!')),
           );
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => MyApp()),
-          );
+          Navigator.of(context).pushReplacementNamed('/home_screen');
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Falha ao registrar o usuário. Código: ${response.statusCode} - ${response.body}')),
@@ -66,9 +67,21 @@ class _RegistrarState extends State<Registrar> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Registrar'),
+        actions: [
+          IconButton(
+            icon: Icon(
+              theme.brightness == Brightness.dark
+                  ? Icons.light_mode
+                  : Icons.dark_mode,
+            ),
+            onPressed: widget.onToggleTheme,
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
