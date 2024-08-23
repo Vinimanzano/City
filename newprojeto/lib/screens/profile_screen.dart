@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:video_player/video_player.dart';
-import 'package:adaptive_theme/adaptive_theme.dart'; // Adicione esta importação
+import 'package:adaptive_theme/adaptive_theme.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -176,11 +176,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   void _toggleTheme() {
-    final currentMode = AdaptiveTheme.of(context).mode;
+    final adaptiveTheme = AdaptiveTheme.of(context);
+    final currentMode = adaptiveTheme.mode;
     if (currentMode.isDark) {
-      AdaptiveTheme.of(context).setLight();
+      adaptiveTheme.setLight();
     } else {
-      AdaptiveTheme.of(context).setDark();
+      adaptiveTheme.setDark();
     }
   }
 
@@ -209,7 +210,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   radius: 50,
                   backgroundImage: _imageFile != null
                       ? FileImage(_imageFile!)
-                      : AssetImage('assets/profile_picture.png') as ImageProvider,
+                      : NetworkImage('https://www.w3schools.com/w3images/avatar1.png'),
                 ),
                 SizedBox(height: 20),
                 ElevatedButton(

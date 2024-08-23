@@ -1,28 +1,39 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:newprojeto/screens/bairros_screen.dart';
-import '../screens/home_screen.dart';
-import '../screens/navigation_bar_app.dart';
-import '../screens/home_screen.dart';
-import '../screens/thank_you_screen.dart';
-import '../screens/os_screen.dart';
+import 'package:newprojeto/screens/login_screen.dart';
 
-void main() {
-  runApp(MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final savedThemeMode = await AdaptiveTheme.getThemeMode();
+  runApp(MyApp(savedThemeMode: savedThemeMode));
 }
 
 class MyApp extends StatelessWidget {
+  final AdaptiveThemeMode? savedThemeMode;
+
+  const MyApp({super.key, this.savedThemeMode});
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Seu Aplicativo',
-      initialRoute: '/home_screen',
-      routes: {
-        '/home_screen': (context) => MyApp(),
-        '/thank_you': (context) => ThankYouScreen(),
-        '/os_screen': (context) => OsScreen(bairro: 'Exemplo'),
-        '/bairros_screen': (context) => BairrosScreen(),
-        '/navigation_bar': (context) => NavigationBarApp(username: 'Usuário'),
-      },
+    return AdaptiveTheme(
+      light: ThemeData(
+        useMaterial3: true,
+        brightness: Brightness.light,
+        colorSchemeSeed: Colors.blue,
+      ),
+      dark: ThemeData(
+        useMaterial3: true,
+        brightness: Brightness.dark,
+        colorSchemeSeed: Colors.blue,
+      ),
+      initial: savedThemeMode ?? AdaptiveThemeMode.light,
+      builder: (theme, darkTheme) => MaterialApp(
+        title: 'Adaptive Theme',
+        theme: theme,
+        darkTheme: darkTheme,
+        home: LoginScreen(), // Atualize para a tela de perfil ou inicial
+      ),
+      debugShowFloatingThemeButton: true,
     );
   }
 }

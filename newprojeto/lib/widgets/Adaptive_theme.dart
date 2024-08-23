@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final savedThemeMode = await AdaptiveTheme.getThemeMode();
+  final savedThemeMode = await AdaptiveTheme.getThemeMode() ?? AdaptiveThemeMode.light;
   runApp(MyApp(savedThemeMode: savedThemeMode));
 }
 
 class MyApp extends StatelessWidget {
-  final AdaptiveThemeMode? savedThemeMode;
+  final AdaptiveThemeMode savedThemeMode;
 
-  const MyApp({super.key, this.savedThemeMode});
+  const MyApp({super.key, required this.savedThemeMode});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
         brightness: Brightness.dark,
         colorSchemeSeed: Colors.blue,
       ),
-      initial: savedThemeMode ?? AdaptiveThemeMode.light,
+      initial: savedThemeMode,
       builder: (theme, darkTheme) => MaterialApp(
         title: 'Adaptive Theme',
         theme: theme,
@@ -42,6 +42,8 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final adaptiveTheme = AdaptiveTheme.of(context);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Adaptive Theme'),
@@ -52,12 +54,6 @@ class MyHomePage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              const Text(
-                '',
-              ),
-              const Text(
-                '',
-              ),
               const SizedBox(height: 20),
               Row(
                 mainAxisSize: MainAxisSize.min,
@@ -65,12 +61,12 @@ class MyHomePage extends StatelessWidget {
                   const Text('Light'),
                   const SizedBox(width: 10),
                   Switch(
-                    value: AdaptiveTheme.of(context).mode.isDark,
+                    value: adaptiveTheme.mode.isDark,
                     onChanged: (value) {
                       if (value) {
-                        AdaptiveTheme.of(context).setDark();
+                        adaptiveTheme.setDark();
                       } else {
-                        AdaptiveTheme.of(context).setLight();
+                        adaptiveTheme.setLight();
                       }
                     },
                   ),

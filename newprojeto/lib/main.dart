@@ -12,7 +12,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final prefs = await SharedPreferences.getInstance();
   final isDarkMode = prefs.getBool('isDarkMode') ?? false;
-  
+
   runApp(MyApp(isDarkMode: isDarkMode));
 }
 
@@ -46,9 +46,10 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Seu Aplicativo',
       theme: ThemeData(
-        brightness: _isDarkMode ? Brightness.dark : Brightness.light,
+        brightness: Brightness.light,
         colorSchemeSeed: Colors.blue,
         useMaterial3: true,
       ),

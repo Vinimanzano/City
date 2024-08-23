@@ -148,21 +148,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   SizedBox(height: 10),
                   TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => Registrar(),
-                        ),
-                      );
-                    },
-                    style: TextButton.styleFrom(
-                      foregroundColor: Colors.black,
-                    ),
-                    child: Text('Não tem uma conta? Registre-se'),
-                  ),
-                  SizedBox(height: 10),
-                  TextButton(
                     onPressed: _esqueciSenha,
                     style: TextButton.styleFrom(
                       foregroundColor: Colors.black,
