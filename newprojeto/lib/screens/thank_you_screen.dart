@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:newprojeto/screens/home_screen.dart';
+import 'login_screen.dart'; // Certifique-se de ajustar o caminho de importação conforme necessário
 
 class ThankYouScreen extends StatelessWidget {
   @override
@@ -22,13 +22,14 @@ class ThankYouScreen extends StatelessWidget {
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.pushNamedAndRemoveUntil(
+                  Navigator.pushReplacement(
                     context,
-                    '/',
-                    (Route<dynamic> route) => false,
+                    MaterialPageRoute(
+                      builder: (context) => LoginScreen(onToggleTheme: () {}),
+                    ),
                   );
                 },
-                child: Text('Voltar para a Página Inicial'),
+                child: Text('Ir para tela de Login'),
               ),
             ],
           ),

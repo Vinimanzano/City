@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:newprojeto/screens/login_screen.dart';
 
 class Registrar extends StatefulWidget {
   final VoidCallback onToggleTheme;
@@ -38,12 +39,14 @@ class _RegistrarState extends State<Registrar> {
       };
 
       try {
+        print('Iniciando requisição de cadastro...');
         final response = await http.post(
           Uri.parse('http://192.168.0.105:8080/usuario'),
           headers: {'Content-Type': 'application/json'},
           body: json.encode(userData),
         );
 
+        print('Resposta recebida.');
         print('Status Code: ${response.statusCode}');
         print('Response Body: ${response.body}');
 
@@ -51,7 +54,9 @@ class _RegistrarState extends State<Registrar> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Usuário $_username registrado com sucesso!')),
           );
-          Navigator.of(context).pushReplacementNamed('/home_screen');
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => LoginScreen(onToggleTheme: widget.onToggleTheme)),
+          );
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Falha ao registrar o usuário. Código: ${response.statusCode} - ${response.body}')),
@@ -67,21 +72,11 @@ class _RegistrarState extends State<Registrar> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return Scaffold(
       appBar: AppBar(
         title: Text('Registrar'),
-        actions: [
-          IconButton(
-            icon: Icon(
-              theme.brightness == Brightness.dark
-                  ? Icons.light_mode
-                  : Icons.dark_mode,
-            ),
-            onPressed: widget.onToggleTheme,
-          ),
-        ],
+        // Remover o IconButton que alterna o tema
+        actions: [],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -121,18 +116,6 @@ class _RegistrarState extends State<Registrar> {
               TextFormField(
                 decoration: InputDecoration(
                   labelText: 'Senha',
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      _obscurePassword
-                          ? Icons.visibility
-                          : Icons.visibility_off,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        _obscurePassword = !_obscurePassword;
-                      });
-                    },
-                  ),
                 ),
                 obscureText: _obscurePassword,
                 validator: (value) {
@@ -151,18 +134,6 @@ class _RegistrarState extends State<Registrar> {
               TextFormField(
                 decoration: InputDecoration(
                   labelText: 'Confirme a Senha',
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      _obscureConfirmPassword
-                          ? Icons.visibility
-                          : Icons.visibility_off,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        _obscureConfirmPassword = !_obscureConfirmPassword;
-                      });
-                    },
-                  ),
                 ),
                 obscureText: _obscureConfirmPassword,
                 validator: (value) {
@@ -181,6 +152,13 @@ class _RegistrarState extends State<Registrar> {
               ElevatedButton(
                 onPressed: _register,
                 child: Text('Registrar'),
+              ),
+              SizedBox(height: 10),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('Voltar'),
               ),
             ],
           ),

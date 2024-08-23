@@ -1,39 +1,33 @@
-import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:newprojeto/screens/login_screen.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  final savedThemeMode = await AdaptiveTheme.getThemeMode();
-  runApp(MyApp(savedThemeMode: savedThemeMode));
-}
-
-class MyApp extends StatelessWidget {
-  final AdaptiveThemeMode? savedThemeMode;
-
-  const MyApp({super.key, this.savedThemeMode});
-
+class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return AdaptiveTheme(
-      light: ThemeData(
-        useMaterial3: true,
-        brightness: Brightness.light,
-        colorSchemeSeed: Colors.blue,
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Tela Inicial'),
       ),
-      dark: ThemeData(
-        useMaterial3: true,
-        brightness: Brightness.dark,
-        colorSchemeSeed: Colors.blue,
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text('Bem-vindo à Tela Inicial!'),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/thank_you');
+              },
+              child: Text('Ir para Tela de Agradecimento'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/os_screen');
+              },
+              child: Text('Ir para OS Screen'),
+            ),
+          ],
+        ),
       ),
-      initial: savedThemeMode ?? AdaptiveThemeMode.light,
-      builder: (theme, darkTheme) => MaterialApp(
-        title: 'Adaptive Theme',
-        theme: theme,
-        darkTheme: darkTheme,
-        home: LoginScreen(), // Atualize para a tela de perfil ou inicial
-      ),
-      debugShowFloatingThemeButton: true,
     );
   }
 }

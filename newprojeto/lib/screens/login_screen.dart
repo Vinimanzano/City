@@ -1,12 +1,16 @@
-import 'package:newprojeto/widgets/navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:newprojeto/screens/TelaSolicitacaoSenha.dart';
+import 'package:newprojeto/screens/registrar.dart';
+import 'package:newprojeto/screens/navigation_bar_app.dart';
 import 'dart:convert';
-import 'navigation_bar_app.dart';
-import 'TelaSolicitacaoSenha.dart';
-import 'registrar.dart';
+import 'package:adaptive_theme/adaptive_theme.dart';
 
 class LoginScreen extends StatefulWidget {
+  final VoidCallback onToggleTheme;
+
+  const LoginScreen({required this.onToggleTheme, Key? key}) : super(key: key);
+
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
@@ -76,11 +80,27 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+  void _registrar() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => Registrar(
+          onToggleTheme: widget.onToggleTheme,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = AdaptiveTheme.of(context).mode == AdaptiveThemeMode.dark;
+    final textColor = isDarkMode ? Colors.white : Colors.black;
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('Login'),
+        title: Text('Login', style: TextStyle(color: textColor)),
+        backgroundColor: isDarkMode ? Colors.black : Colors.white,
+        iconTheme: IconThemeData(color: textColor),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -95,8 +115,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     decoration: InputDecoration(
                       labelText: 'Usuário',
                       border: OutlineInputBorder(),
+                      labelStyle: TextStyle(color: textColor),
                     ),
-                    style: TextStyle(color: Colors.black),
+                    style: TextStyle(color: textColor),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Por favor, insira seu usuário';
@@ -112,11 +133,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     decoration: InputDecoration(
                       labelText: 'Senha',
                       border: OutlineInputBorder(),
+                      labelStyle: TextStyle(color: textColor),
                       suffixIcon: IconButton(
                         icon: Icon(
-                          _obscureText
-                              ? Icons.visibility
-                              : Icons.visibility_off,
+                          _obscureText ? Icons.visibility : Icons.visibility_off,
+                          color: textColor,
                         ),
                         onPressed: () {
                           setState(() {
@@ -125,7 +146,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         },
                       ),
                     ),
-                    style: TextStyle(color: Colors.black),
+                    style: TextStyle(color: textColor),
                     obscureText: _obscureText,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -142,7 +163,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     onPressed: _login,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blue,
-                      foregroundColor: Colors.black,
+                      foregroundColor: Colors.white,
                     ),
                     child: Text('Login'),
                   ),
@@ -150,15 +171,34 @@ class _LoginScreenState extends State<LoginScreen> {
                   TextButton(
                     onPressed: _esqueciSenha,
                     style: TextButton.styleFrom(
-                      foregroundColor: Colors.black,
+                      foregroundColor: Colors.blue,
                     ),
                     child: Text('Esqueceu a senha?'),
+                  ),
+                  SizedBox(height: 10),
+                  TextButton(
+                    onPressed: _registrar,
+                    style: TextButton.styleFrom(
+                      foregroundColor: Colors.blue,
+                    ),
+                    child: Text('Registrar'),
                   ),
                 ],
               ),
             ),
           ),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          final currentThemeMode = AdaptiveTheme.of(context).mode;
+          final newThemeMode = currentThemeMode == AdaptiveThemeMode.light
+              ? AdaptiveThemeMode.dark
+              : AdaptiveThemeMode.light;
+          AdaptiveTheme.of(context).setThemeMode(newThemeMode);
+        },
+        child: Icon(Icons.brightness_6),
+        tooltip: 'Alternar Tema',
       ),
     );
   }

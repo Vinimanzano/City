@@ -1,75 +1,59 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import './screens/bairros_screen.dart';
-import './screens/home_screen.dart';
-import './screens/navigation_bar_app.dart';
-import './screens/thank_you_screen.dart';
-import './screens/os_screen.dart';
-import './screens/login_screen.dart';
-import './screens/registrar.dart';
+import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:newprojeto/screens/login_screen.dart';
+import 'package:newprojeto/screens/registrar.dart';
+import 'package:newprojeto/screens/TelaSolicitacaoSenha.dart';
+import 'package:newprojeto/screens/navigation_bar_app.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final prefs = await SharedPreferences.getInstance();
-  final isDarkMode = prefs.getBool('isDarkMode') ?? false;
-
-  runApp(MyApp(isDarkMode: isDarkMode));
+  final savedThemeMode = await AdaptiveTheme.getThemeMode();
+  runApp(MyApp(savedThemeMode: savedThemeMode));
 }
 
-class MyApp extends StatefulWidget {
-  final bool isDarkMode;
+class MyApp extends StatelessWidget {
+  final AdaptiveThemeMode? savedThemeMode;
 
-  const MyApp({required this.isDarkMode, Key? key}) : super(key: key);
-
-  @override
-  _MyAppState createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  late bool _isDarkMode;
-
-  @override
-  void initState() {
-    super.initState();
-    _isDarkMode = widget.isDarkMode;
-  }
-
-  void _toggleTheme() async {
-    setState(() {
-      _isDarkMode = !_isDarkMode;
-    });
-
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('isDarkMode', _isDarkMode);
-  }
+  const MyApp({super.key, this.savedThemeMode});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Seu Aplicativo',
-      theme: ThemeData(
+    return AdaptiveTheme(
+      light: ThemeData(
+        useMaterial3: true,
         brightness: Brightness.light,
         colorSchemeSeed: Colors.blue,
-        useMaterial3: true,
       ),
-      darkTheme: ThemeData(
+      dark: ThemeData(
+        useMaterial3: true,
         brightness: Brightness.dark,
         colorSchemeSeed: Colors.blue,
-        useMaterial3: true,
       ),
-      themeMode: _isDarkMode ? ThemeMode.dark : ThemeMode.light,
-      initialRoute: '/login_screen',
-      routes: {
-        '/': (context) => LoginScreen(),
-        '/login_screen': (context) => LoginScreen(),
-        '/thank_you': (context) => ThankYouScreen(),
-        '/os_screen': (context) => OsScreen(bairro: 'Exemplo'),
-        '/bairros_screen': (context) => BairrosScreen(),
-        '/navigation_bar_app': (context) => NavigationBarApp(username: 'UsuarioExemplo'),
-        '/home_screen': (context) => HomeScreen(username: 'UsuarioExemplo'),
-        '/registrar': (context) => Registrar(onToggleTheme: _toggleTheme),
-      },
+      initial: savedThemeMode ?? AdaptiveThemeMode.light,
+      builder: (theme, darkTheme) => MaterialApp(
+        title: 'Minha Aplicação',
+        theme: theme,
+        darkTheme: darkTheme,
+        debugShowCheckedModeBanner: false,
+        routes: {
+          '/': (context) => LoginScreen(onToggleTheme: () {
+            final currentThemeMode = AdaptiveTheme.of(context).mode;
+            final newThemeMode = currentThemeMode == AdaptiveThemeMode.light
+                ? AdaptiveThemeMode.dark
+                : AdaptiveThemeMode.light;
+            AdaptiveTheme.of(context).setThemeMode(newThemeMode);
+          }),
+          '/registrar': (context) => Registrar(onToggleTheme: () {
+            final currentThemeMode = AdaptiveTheme.of(context).mode;
+            final newThemeMode = currentThemeMode == AdaptiveThemeMode.light
+                ? AdaptiveThemeMode.dark
+                : AdaptiveThemeMode.light;
+            AdaptiveTheme.of(context).setThemeMode(newThemeMode);
+          }),
+          '/TelaSolicitacaoSenha': (context) => TelaSolicitacaoSenha(),
+          '/NavigationBarApp': (context) => NavigationBarApp(username: 'user'),
+        },
+      ),
     );
   }
 }

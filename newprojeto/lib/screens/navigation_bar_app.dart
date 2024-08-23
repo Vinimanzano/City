@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:newprojeto/screens/bairros_screen.dart';
+import 'package:adaptive_theme/adaptive_theme.dart'; // Importar para usar AdaptiveTheme
 import 'package:newprojeto/screens/login_screen.dart';
+import 'package:newprojeto/screens/bairros_screen.dart';
 import 'package:newprojeto/screens/messages_screen.dart';
 import 'package:newprojeto/screens/profile_screen.dart';
 
@@ -72,7 +73,7 @@ class _NavigationBarAppState extends State<NavigationBarApp> {
   void _logout() {
     Navigator.pushAndRemoveUntil(
       context,
-      MaterialPageRoute(builder: (context) => LoginScreen()),
+      MaterialPageRoute(builder: (context) => LoginScreen(onToggleTheme: () {})),
       (Route<dynamic> route) => false,
     );
     ScaffoldMessenger.of(context).showSnackBar(
@@ -117,6 +118,17 @@ class _NavigationBarAppState extends State<NavigationBarApp> {
         selectedItemColor: brightness == Brightness.dark ? Colors.white : Colors.black,
         unselectedItemColor: brightness == Brightness.dark ? Colors.grey : Colors.black54,
         onTap: _onItemTapped,
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          final currentThemeMode = AdaptiveTheme.of(context).mode;
+          final newThemeMode = currentThemeMode == AdaptiveThemeMode.light
+              ? AdaptiveThemeMode.dark
+              : AdaptiveThemeMode.light;
+          AdaptiveTheme.of(context).setThemeMode(newThemeMode);
+        },
+        child: Icon(Icons.brightness_6),
+        tooltip: 'Alternar Tema',
       ),
     );
   }
