@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
-import 'package:newprojeto/screens/home_screen.dart';
 import 'package:newprojeto/screens/login_screen.dart';
 
 void main() async {

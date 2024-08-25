@@ -82,6 +82,14 @@ class _OsScreenState extends State<OsScreen> {
   }
 
   void _submit() {
+    if (_nameController.text.isEmpty || _descriptionController.text.isEmpty) {
+      // Adicione lógica de validação se necessário
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Preencha todos os campos')),
+      );
+      return;
+    }
+
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => ThankYouScreen()),
@@ -138,17 +146,18 @@ class _OsScreenState extends State<OsScreen> {
                   ],
                 ),
                 SizedBox(height: 20),
-                _imageFile != null
-                    ? Image.file(
-                        _imageFile!,
-                        width: 100,
-                        height: 100,
-                        fit: BoxFit.cover,
-                      )
-                    : Container(),
-                _videoFile != null
-                    ? Text('Vídeo Selecionado: ${_videoFile!.path}')
-                    : Container(),
+                if (_imageFile != null)
+                  Image.file(
+                    _imageFile!,
+                    height: 150,
+                    width: 150,
+                    fit: BoxFit.cover,
+                  ),
+                if (_videoFile != null)
+                  Text(
+                    'Vídeo selecionado: ${_videoFile!.path}',
+                    style: TextStyle(color: Colors.green),
+                  ),
                 SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: _submit,

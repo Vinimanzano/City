@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:adaptive_theme/adaptive_theme.dart'; // Importar para usar AdaptiveTheme
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:newprojeto/screens/login_screen.dart';
 import 'package:newprojeto/screens/bairros_screen.dart';
 import 'package:newprojeto/screens/messages_screen.dart';
 import 'package:newprojeto/screens/profile_screen.dart';
+import 'package:newprojeto/screens/homescreen.dart';
 
 class NavigationBarApp extends StatefulWidget {
   final String username;
@@ -87,9 +88,6 @@ class _NavigationBarAppState extends State<NavigationBarApp> {
     final brightness = theme.brightness;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Bem-vindo, ${widget.username}'),
-      ),
       body: _pages[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
@@ -129,39 +127,6 @@ class _NavigationBarAppState extends State<NavigationBarApp> {
         },
         child: Icon(Icons.brightness_6),
         tooltip: 'Alternar Tema',
-      ),
-    );
-  }
-}
-
-class HomeScreen extends StatelessWidget {
-  final String username;
-
-  const HomeScreen({required this.username, Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text(
-            'Bem-vindo(a) $username',
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          SizedBox(height: 16),
-          Text(
-            username,
-            style: TextStyle(
-              fontSize: 32,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ],
       ),
     );
   }

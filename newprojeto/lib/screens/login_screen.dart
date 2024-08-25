@@ -97,11 +97,6 @@ class _LoginScreenState extends State<LoginScreen> {
     final textColor = isDarkMode ? Colors.white : Colors.black;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Login', style: TextStyle(color: textColor)),
-        backgroundColor: isDarkMode ? Colors.black : Colors.white,
-        iconTheme: IconThemeData(color: textColor),
-      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -109,9 +104,24 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Form(
               key: _formKey,
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(90),
+                    child: Image.network(
+                      'https://www.w3schools.com/w3images/avatar2.png',
+                      width: 130,
+                      height: 130,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  SizedBox(height: 20.0),
                   TextFormField(
+                    keyboardType: TextInputType.emailAddress,
+                    textInputAction: TextInputAction.next,
+                    cursorColor: textColor,
                     decoration: InputDecoration(
                       labelText: 'Usuário',
                       border: OutlineInputBorder(),
@@ -162,7 +172,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ElevatedButton(
                     onPressed: _login,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue,
+                      backgroundColor: const Color.fromARGB(255, 121, 144, 163),
                       foregroundColor: Colors.white,
                     ),
                     child: Text('Login'),
@@ -175,11 +185,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     child: Text('Esqueceu a senha?'),
                   ),
-                  SizedBox(height: 10),
-                  TextButton(
+                  SizedBox(height: 20),
+                  ElevatedButton(
                     onPressed: _registrar,
-                    style: TextButton.styleFrom(
-                      foregroundColor: Colors.blue,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color.fromARGB(255, 121, 144, 163),
+                      foregroundColor: Colors.white,
                     ),
                     child: Text('Registrar'),
                   ),
