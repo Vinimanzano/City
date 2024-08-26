@@ -97,105 +97,103 @@ class _LoginScreenState extends State<LoginScreen> {
     final textColor = isDarkMode ? Colors.white : Colors.black;
 
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Padding(
+      body: Center(  // Centraliza o conteúdo no meio da tela
+        child: SingleChildScrollView(
           padding: const EdgeInsets.all(16.0),
-          child: Center(
-            child: Form(
-              key: _formKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(90),
-                    child: Image.network(
-                      'https://www.w3schools.com/w3images/avatar2.png',
-                      width: 130,
-                      height: 130,
-                      fit: BoxFit.cover,
-                    ),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(90),
+                  child: Image.network(
+                    'https://www.w3schools.com/w3images/avatar2.png',
+                    width: 130,
+                    height: 130,
+                    fit: BoxFit.cover,
                   ),
-                  SizedBox(height: 20.0),
-                  TextFormField(
-                    keyboardType: TextInputType.emailAddress,
-                    textInputAction: TextInputAction.next,
-                    cursorColor: textColor,
-                    decoration: InputDecoration(
-                      labelText: 'Usuário',
-                      border: OutlineInputBorder(),
-                      labelStyle: TextStyle(color: textColor),
-                    ),
-                    style: TextStyle(color: textColor),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Por favor, insira seu usuário';
-                      }
-                      return null;
-                    },
-                    onSaved: (value) {
-                      _usuario = value!;
-                    },
+                ),
+                SizedBox(height: 20.0),
+                TextFormField(
+                  keyboardType: TextInputType.emailAddress,
+                  textInputAction: TextInputAction.next,
+                  cursorColor: textColor,
+                  decoration: InputDecoration(
+                    labelText: 'Usuário',
+                    border: OutlineInputBorder(),
+                    labelStyle: TextStyle(color: textColor),
                   ),
-                  SizedBox(height: 16.0),
-                  TextFormField(
-                    decoration: InputDecoration(
-                      labelText: 'Senha',
-                      border: OutlineInputBorder(),
-                      labelStyle: TextStyle(color: textColor),
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          _obscureText ? Icons.visibility : Icons.visibility_off,
-                          color: textColor,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            _obscureText = !_obscureText;
-                          });
-                        },
+                  style: TextStyle(color: textColor),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Por favor, insira seu usuário';
+                    }
+                    return null;
+                  },
+                  onSaved: (value) {
+                    _usuario = value!;
+                  },
+                ),
+                SizedBox(height: 16.0),
+                TextFormField(
+                  decoration: InputDecoration(
+                    labelText: 'Senha',
+                    border: OutlineInputBorder(),
+                    labelStyle: TextStyle(color: textColor),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _obscureText ? Icons.visibility : Icons.visibility_off,
+                        color: textColor,
                       ),
+                      onPressed: () {
+                        setState(() {
+                          _obscureText = !_obscureText;
+                        });
+                      },
                     ),
-                    style: TextStyle(color: textColor),
-                    obscureText: _obscureText,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Por favor, insira sua senha';
-                      }
-                      return null;
-                    },
-                    onSaved: (value) {
-                      _senha = value!;
-                    },
                   ),
-                  SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: _login,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(255, 121, 144, 163),
-                      foregroundColor: Colors.white,
-                    ),
-                    child: Text('Login'),
+                  style: TextStyle(color: textColor),
+                  obscureText: _obscureText,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Por favor, insira sua senha';
+                    }
+                    return null;
+                  },
+                  onSaved: (value) {
+                    _senha = value!;
+                  },
+                ),
+                SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: _login,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color.fromARGB(255, 121, 144, 163),
+                    foregroundColor: Colors.white,
                   ),
-                  SizedBox(height: 10),
-                  TextButton(
-                    onPressed: _esqueciSenha,
-                    style: TextButton.styleFrom(
-                      foregroundColor: Colors.blue,
-                    ),
-                    child: Text('Esqueceu a senha?'),
+                  child: Text('Login'),
+                ),
+                SizedBox(height: 10),
+                TextButton(
+                  onPressed: _esqueciSenha,
+                  style: TextButton.styleFrom(
+                    foregroundColor: Colors.blue,
                   ),
-                  SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: _registrar,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(255, 121, 144, 163),
-                      foregroundColor: Colors.white,
-                    ),
-                    child: Text('Registrar'),
+                  child: Text('Esqueceu a senha?'),
+                ),
+                SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: _registrar,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color.fromARGB(255, 121, 144, 163),
+                    foregroundColor: Colors.white,
                   ),
-                ],
-              ),
+                  child: Text('Registrar'),
+                ),
+              ],
             ),
           ),
         ),

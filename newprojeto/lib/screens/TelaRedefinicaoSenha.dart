@@ -24,9 +24,7 @@ class _TelaRedefinicaoSenhaState extends State<TelaRedefinicaoSenha> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Redefinir Senha'),
-      ),
+      appBar: null, // Define o AppBar como null para removê-lo
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Center(

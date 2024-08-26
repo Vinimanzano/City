@@ -18,6 +18,7 @@ class _OsScreenState extends State<OsScreen> {
   File? _videoFile;
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
+  String? _selectedTopic;
 
   Future<void> _pickImage() async {
     final XFile? pickedFile = await showDialog<XFile>(
@@ -28,13 +29,15 @@ class _OsScreenState extends State<OsScreen> {
           actions: [
             TextButton(
               onPressed: () async {
-                Navigator.of(context).pop(await _picker.pickImage(source: ImageSource.camera));
+                Navigator.of(context)
+                    .pop(await _picker.pickImage(source: ImageSource.camera));
               },
               child: Text('Tirar Foto'),
             ),
             TextButton(
               onPressed: () async {
-                Navigator.of(context).pop(await _picker.pickImage(source: ImageSource.gallery));
+                Navigator.of(context)
+                    .pop(await _picker.pickImage(source: ImageSource.gallery));
               },
               child: Text('Escolher da Galeria'),
             ),
@@ -59,13 +62,15 @@ class _OsScreenState extends State<OsScreen> {
           actions: [
             TextButton(
               onPressed: () async {
-                Navigator.of(context).pop(await _picker.pickVideo(source: ImageSource.camera));
+                Navigator.of(context)
+                    .pop(await _picker.pickVideo(source: ImageSource.camera));
               },
               child: Text('Gravar Vídeo'),
             ),
             TextButton(
               onPressed: () async {
-                Navigator.of(context).pop(await _picker.pickVideo(source: ImageSource.gallery));
+                Navigator.of(context)
+                    .pop(await _picker.pickVideo(source: ImageSource.gallery));
               },
               child: Text('Escolher da Galeria'),
             ),
@@ -81,9 +86,34 @@ class _OsScreenState extends State<OsScreen> {
     }
   }
 
+  Future<bool> _onWillPop() async {
+    final shouldPop = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Tem certeza?'),
+          content: Text('Deseja sair sem salvar?'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              child: Text('Sim'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text('Não'),
+            ),
+          ],
+        );
+      },
+    );
+
+    return shouldPop ?? false;
+  }
+
   void _submit() {
-    if (_nameController.text.isEmpty || _descriptionController.text.isEmpty) {
-      // Adicione lógica de validação se necessário
+    if (_nameController.text.isEmpty ||
+        _descriptionController.text.isEmpty ||
+        _selectedTopic == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Preencha todos os campos')),
       );
@@ -98,71 +128,110 @@ class _OsScreenState extends State<OsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  'Detalhes para o bairro: ${widget.bairro}',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 20),
-                TextField(
-                  controller: _nameController,
-                  decoration: InputDecoration(
-                    labelText: 'Nome',
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                SizedBox(height: 20),
-                TextField(
-                  controller: _descriptionController,
-                  decoration: InputDecoration(
-                    labelText: 'Descrição',
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ElevatedButton(
-                      onPressed: _pickImage,
-                      child: Text('Escolher Imagem'),
-                    ),
-                    SizedBox(width: 10),
-                    ElevatedButton(
-                      onPressed: _pickVideo,
-                      child: Text('Escolher Vídeo'),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 20),
-                if (_imageFile != null)
-                  Image.file(
-                    _imageFile!,
-                    height: 150,
-                    width: 150,
-                    fit: BoxFit.cover,
-                  ),
-                if (_videoFile != null)
-                  Text(
-                    'Vídeo selecionado: ${_videoFile!.path}',
-                    style: TextStyle(color: Colors.green),
-                  ),
-                SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: _submit,
-                  child: Text('Enviar'),
-                ),
-              ],
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: Scaffold(
+        body: Column(
+          children: [
+            Container(
+              padding: EdgeInsets.all(16.0),
+              alignment: Alignment.topLeft,
+              child: Text(
+                'Cadastro de OS',
+                style: TextStyle(fontSize: 18),
+              ),
             ),
-          ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Detalhes para o bairro: ${widget.bairro}',
+                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(height: 20),
+                      DropdownButtonFormField<String>(
+                        value: _selectedTopic,
+                        decoration: InputDecoration(
+                          labelText: 'Tópico',
+                          border: OutlineInputBorder(),
+                        ),
+                        items: <String>[
+                          'Iluminação',
+                          'Urbanismo',
+                          'Ruas',
+                          'Construção'
+                        ].map((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            _selectedTopic = newValue;
+                          });
+                        },
+                      ),
+                      SizedBox(height: 20),
+                      TextField(
+                        controller: _nameController,
+                        decoration: InputDecoration(
+                          labelText: 'Nome',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                      SizedBox(height: 20),
+                      TextField(
+                        controller: _descriptionController,
+                        decoration: InputDecoration(
+                          labelText: 'Descrição',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                      SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ElevatedButton(
+                            onPressed: _pickImage,
+                            child: Text('Escolher Imagem'),
+                          ),
+                          SizedBox(width: 10),
+                          ElevatedButton(
+                            onPressed: _pickVideo,
+                            child: Text('Escolher Vídeo'),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 20),
+                      if (_imageFile != null)
+                        Image.file(
+                          _imageFile!,
+                          height: 150,
+                          width: 150,
+                          fit: BoxFit.cover,
+                        ),
+                      if (_videoFile != null)
+                        Text(
+                          'Vídeo selecionado: ${_videoFile!.path}',
+                          style: TextStyle(color: Colors.green),
+                        ),
+                      SizedBox(height: 20),
+                      ElevatedButton(
+                        onPressed: _submit,
+                        child: Text('Enviar'),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

@@ -72,96 +72,149 @@ class _RegistrarState extends State<Registrar> {
 
   @override
   Widget build(BuildContext context) {
+    // Obtendo o tema atual
+    final theme = Theme.of(context);
+    final textColor = theme.brightness == Brightness.dark ? Colors.white : Colors.black; // Definindo a cor do texto com base no tema
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Registrar'),
-        // Remover o IconButton que alterna o tema
-        actions: [],
-      ),
+      appBar: null,
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: ListView(
-            children: [
-              TextFormField(
-                decoration: InputDecoration(labelText: 'Nome de Usuário'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Por favor, insira um nome de usuário';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  setState(() {
-                    _username = value!;
-                  });
-                },
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Registrar',
+              style: TextStyle(
+                fontSize: 24.0,
+                fontWeight: FontWeight.bold,
+                
+                color: textColor,
               ),
-              TextFormField(
-                decoration: InputDecoration(labelText: 'Número de Celular'),
-                keyboardType: TextInputType.phone,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Por favor, insira um número de celular';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  setState(() {
-                    _telefone = value!;
-                  });
-                },
-              ),
-              TextFormField(
-                decoration: InputDecoration(
-                  labelText: 'Senha',
+            ),
+            SizedBox(height: 16.0),
+            Expanded(
+              child: Form(
+                key: _formKey,
+                child: ListView(
+                  children: [
+                    TextFormField(
+                      decoration: InputDecoration(
+                        labelText: 'Nome de Usuário',
+                        border: OutlineInputBorder(),
+                        labelStyle: TextStyle(color: textColor),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Por favor, insira um nome de usuário';
+                        }
+                        return null;
+                      },
+                      onSaved: (value) {
+                        setState(() {
+                          _username = value!;
+                        });
+                      },
+                    ),
+                    SizedBox(height: 16.0),
+                    TextFormField(
+                      decoration: InputDecoration(
+                        labelText: 'Número de Celular',
+                        border: OutlineInputBorder(),
+                        labelStyle: TextStyle(color: textColor),
+                      ),
+                      keyboardType: TextInputType.phone,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Por favor, insira um número de celular';
+                        }
+                        return null;
+                      },
+                      onSaved: (value) {
+                        setState(() {
+                          _telefone = value!;
+                        });
+                      },
+                    ),
+                    SizedBox(height: 16.0),
+                    TextFormField(
+                      decoration: InputDecoration(
+                        labelText: 'Senha',
+                        border: OutlineInputBorder(),
+                        labelStyle: TextStyle(color: textColor),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _obscurePassword ? Icons.visibility : Icons.visibility_off,
+                            color: textColor,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _obscurePassword = !_obscurePassword;
+                            });
+                          },
+                        ),
+                      ),
+                      obscureText: _obscurePassword,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Por favor, insira uma senha';
+                        }
+                        return null;
+                      },
+                      onSaved: (value) {
+                        setState(() {
+                          _password = value!;
+                        });
+                      },
+                    ),
+                    SizedBox(height: 16.0),
+                    TextFormField(
+                      decoration: InputDecoration(
+                        labelText: 'Confirme a Senha',
+                        border: OutlineInputBorder(),
+                        labelStyle: TextStyle(color: textColor),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _obscureConfirmPassword ? Icons.visibility : Icons.visibility_off,
+                            color: textColor,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _obscureConfirmPassword = !_obscureConfirmPassword;
+                            });
+                          },
+                        ),
+                      ),
+                      obscureText: _obscureConfirmPassword,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Por favor, confirme a senha';
+                        }
+                        return null;
+                      },
+                      onSaved: (value) {
+                        setState(() {
+                          _confirmPassword = value!;
+                        });
+                      },
+                    ),
+                    SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: _register,
+                      child: Text('Registrar'),
+                    ),
+                    SizedBox(height: 10),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Text('Voltar'),
+                    ),
+                  ],
                 ),
-                obscureText: _obscurePassword,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Por favor, insira uma senha';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  setState(() {
-                    _password = value!;
-                  });
-                },
               ),
-              SizedBox(height: 16),
-              TextFormField(
-                decoration: InputDecoration(
-                  labelText: 'Confirme a Senha',
-                ),
-                obscureText: _obscureConfirmPassword,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Por favor, confirme a senha';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  setState(() {
-                    _confirmPassword = value!;
-                  });
-                },
-              ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: _register,
-                child: Text('Registrar'),
-              ),
-              SizedBox(height: 10),
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Text('Voltar'),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
