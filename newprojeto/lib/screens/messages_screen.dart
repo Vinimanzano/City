@@ -9,6 +9,7 @@ class MessagesScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Mensagens'),
+        elevation: 0,
       ),
       body: Center(
         child: Padding(

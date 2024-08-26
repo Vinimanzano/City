@@ -9,7 +9,6 @@ class BairrosScreen extends StatefulWidget {
 
 class _BairrosScreenState extends State<BairrosScreen> {
   late Future<List<Map<String, dynamic>>> _bairrosFuture;
-  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -40,9 +39,6 @@ class _BairrosScreenState extends State<BairrosScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Bairros'),
-      ),
       body: FutureBuilder<List<Map<String, dynamic>>>(
         future: _bairrosFuture,
         builder: (context, snapshot) {
@@ -54,49 +50,45 @@ class _BairrosScreenState extends State<BairrosScreen> {
             return Center(child: Text('Nenhum bairro encontrado'));
           } else {
             final bairros = snapshot.data!;
-            return Scrollbar(
-              controller: _scrollController,
-              child: ListView.builder(
-                controller: _scrollController,
-                itemCount: bairros.length,
-                itemBuilder: (context, index) {
-                  final bairro = bairros[index];
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => OsScreen(bairro: bairro['nome']),
-                          ),
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blueAccent,
-                        padding: EdgeInsets.symmetric(vertical: 12.0),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0),
+            return ListView.builder(
+              itemCount: bairros.length,
+              itemBuilder: (context, index) {
+                final bairro = bairros[index];
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => OsScreen(bairro: bairro['nome']),
                         ),
-                        elevation: 5,
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blueAccent,
+                      padding: EdgeInsets.symmetric(vertical: 12.0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
                       ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            bairro['nome'],
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16.0,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
+                      elevation: 5,
                     ),
-                  );
-                },
-              ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          bairro['nome'],
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
             );
           }
         },

@@ -5,9 +5,6 @@ class ThankYouScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Obrigado'),
-      ),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(16.0),

@@ -181,6 +181,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       child: Scaffold(
         appBar: AppBar(
           title: Text('Perfil'),
+          elevation: 0,
         ),
         body: SingleChildScrollView(
           child: Padding(

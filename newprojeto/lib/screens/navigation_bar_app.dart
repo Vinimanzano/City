@@ -19,7 +19,7 @@ class _NavigationBarAppState extends State<NavigationBarApp> {
   int _selectedIndex = 0;
 
   final List<Widget> _pages = [
-    HomeScreen(username: 'User'),
+    HomeScreen(username: 'Carlinho'),
     BairrosScreen(),
     ProfileScreen(),
     MessagesScreen(),

@@ -14,7 +14,6 @@ class HomeScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          // Exibe a imagem do perfil
           CircleAvatar(
             radius: 50,
             backgroundImage: profileImage != null

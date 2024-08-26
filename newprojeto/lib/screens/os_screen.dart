@@ -99,9 +99,6 @@ class _OsScreenState extends State<OsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Detalhes do Bairro'),
-      ),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
