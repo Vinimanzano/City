@@ -15,7 +15,7 @@ class Registrar extends StatefulWidget {
 class _RegistrarState extends State<Registrar> {
   final _formKey = GlobalKey<FormState>();
   String _username = '';
-  String _telefone = '';
+  String _email = '';
   String _password = '';
   String _confirmPassword = '';
   bool _obscurePassword = true;
@@ -34,7 +34,7 @@ class _RegistrarState extends State<Registrar> {
 
       final Map<String, dynamic> userData = {
         'nome': _username,
-        'telefone': _telefone,
+        'email': _email,
         'senha': _password,
       };
 
@@ -74,7 +74,7 @@ class _RegistrarState extends State<Registrar> {
   Widget build(BuildContext context) {
     // Obtendo o tema atual
     final theme = Theme.of(context);
-    final textColor = theme.brightness == Brightness.dark ? Colors.white : Colors.black; // Definindo a cor do texto com base no tema
+    final textColor = theme.brightness == Brightness.dark ? Colors.white : Colors.black;
 
     return Scaffold(
       appBar: null,
@@ -88,7 +88,6 @@ class _RegistrarState extends State<Registrar> {
               style: TextStyle(
                 fontSize: 24.0,
                 fontWeight: FontWeight.bold,
-                
                 color: textColor,
               ),
             ),
@@ -119,20 +118,22 @@ class _RegistrarState extends State<Registrar> {
                     SizedBox(height: 16.0),
                     TextFormField(
                       decoration: InputDecoration(
-                        labelText: 'Número de Celular',
+                        labelText: 'E-mail',
                         border: OutlineInputBorder(),
                         labelStyle: TextStyle(color: textColor),
                       ),
-                      keyboardType: TextInputType.phone,
+                      keyboardType: TextInputType.emailAddress,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Por favor, insira um número de celular';
+                          return 'Por favor, insira um e-mail';
+                        } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
+                          return 'Por favor, insira um e-mail válido';
                         }
                         return null;
                       },
                       onSaved: (value) {
                         setState(() {
-                          _telefone = value!;
+                          _email = value!;
                         });
                       },
                     ),

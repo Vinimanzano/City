@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'login_screen.dart'; // Certifique-se de que este import está correto
+import 'TelaRedefinicaoSenha.dart'; // Certifique-se de que este é o caminho correto
 
 class TelaSolicitacaoSenha extends StatefulWidget {
   @override
@@ -10,41 +10,59 @@ class TelaSolicitacaoSenha extends StatefulWidget {
 
 class _TelaSolicitacaoSenhaState extends State<TelaSolicitacaoSenha> {
   final _formKey = GlobalKey<FormState>();
-  String _telefone = '+551199999999'; // Número de telefone de teste
+  String _email = '';
 
-  Future<void> _enviarWhatsappConfirmacao() async {
+  Future<void> _enviarEmailConfirmacao() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-      final String accountSid = 'US72fab60e762a2eed71c82ea05ea2997e';
-      final String authToken = 'e96c13a9b6faccfb7eea0801a0fb732a';
-      final String twilioNumber = 'whatsapp:+19981173690'; // Formato correto
-      
-      final url = Uri.parse('https://api.twilio.com/2010-04-01/Accounts/$accountSid/Messages.json');
-      final response = await http.post(
-        url,
-        headers: {
-          'Authorization': 'Basic ' + base64Encode(utf8.encode('$accountSid:$authToken')),
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: {
-          'From': twilioNumber,
-          'To': 'whatsapp:$_telefone',
-          'Body': 'Seu código de recuperação de senha é: 123456 (Teste)',
-        },
-      );
 
-      // Debugging: Print the status code and response body
-      print('Status Code: ${response.statusCode}');
-      print('Response Body: ${response.body}');
+      final String apiKey = 'mlsn.690178e003ac3a42f3306686b4ac106fc5c839406f62d3b26fc12e206cd3b56d';
+      final String emailFrom = 'MS_JVN0we@trial-o65qngkzq8jgwr12.mlsender.net'; // Altere para um e-mail verificado
+      final String subject = 'Código de Redefinição de Senha';
+      final String body = 'Seu código de recuperação de senha é: 123456';
 
-      if (response.statusCode == 200) { // Atualizar para 200 para sucesso
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Mensagem enviada via WhatsApp para $_telefone.')),
+      final url = Uri.parse('https://api.mailersend.com/v1/email');
+
+      try {
+        final response = await http.post(
+          url,
+          headers: {
+            'Authorization': 'Bearer $apiKey',
+            'Content-Type': 'application/json',
+          },
+          body: jsonEncode({
+            'from': {
+              'email': emailFrom,
+              'name': 'ViniManzano',
+            },
+            'to': [
+              {'email': _email}
+            ],
+            'subject': subject,
+            'text': body,
+          }),
         );
-        Navigator.pop(context);
-      } else {
+
+        print('Status Code: ${response.statusCode}');
+        print('Response Body: ${response.body}');
+
+        if (response.statusCode == 202) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('E-mail enviado para $_email.')),
+          );
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => TelaRedefinicaoSenha()), // Navegar para a nova tela
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Falha ao enviar o e-mail: ${response.body}')),
+          );
+        }
+      } catch (e) {
+        print('Erro: $e');
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Falha ao enviar mensagem via WhatsApp.')),
+          SnackBar(content: Text('Erro ao tentar enviar o e-mail.')),
         );
       }
     }
@@ -53,52 +71,54 @@ class _TelaSolicitacaoSenhaState extends State<TelaSolicitacaoSenha> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Solicitar Redefinição de Senha'),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center, // Centraliza verticalmente
-          crossAxisAlignment: CrossAxisAlignment.center, // Centraliza horizontalmente
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
               'Solicitar Redefinição de Senha',
               style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 32.0), // Espaçamento extra
+            SizedBox(height: 32.0),
             Form(
               key: _formKey,
               child: Column(
                 children: [
                   TextFormField(
-                    initialValue: _telefone, // Definindo valor inicial para testes
                     decoration: InputDecoration(
-                      labelText: 'Telefone',
+                      labelText: 'E-mail',
                       border: OutlineInputBorder(),
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Por favor, insira seu telefone';
+                        return 'Por favor, insira seu e-mail';
                       }
-                      if (!RegExp(r'^\+\d{1,3}\d{1,14}$').hasMatch(value)) {
-                        return 'Por favor, insira um número de telefone válido';
+                      if (!RegExp(r'^[^@]+@[^@]+\.[^@]+$').hasMatch(value)) {
+                        return 'Por favor, insira um e-mail válido';
                       }
                       return null;
                     },
                     onSaved: (value) {
-                      _telefone = value!;
+                      _email = value!;
                     },
                   ),
                   SizedBox(height: 16.0),
                   ElevatedButton(
-                    onPressed: _enviarWhatsappConfirmacao,
-                    child: Text('Enviar via WhatsApp'),
+                    onPressed: _enviarEmailConfirmacao,
+                    child: Text('Enviar e-mail'),
                   ),
                 ],
               ),
             ),
-            SizedBox(height: 32.0), // Espaçamento extra
+            SizedBox(height: 32.0),
             ElevatedButton(
               onPressed: () {
-                Navigator.of(context).pop(); // Navega de volta para a tela anterior
+                Navigator.of(context).pop();
               },
               child: Text('Voltar'),
             ),

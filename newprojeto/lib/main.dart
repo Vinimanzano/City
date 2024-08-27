@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
       ),
       initial: savedThemeMode ?? AdaptiveThemeMode.light,
       builder: (theme, darkTheme) => MaterialApp(
-        title: 'Minha Aplicação',
+        title: 'Meu projeto para TCC',
         theme: theme,
         darkTheme: darkTheme,
         debugShowCheckedModeBanner: false,

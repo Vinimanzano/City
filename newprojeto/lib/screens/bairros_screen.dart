@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:newprojeto/database/database_helper.dart';
 import 'package:newprojeto/screens/os_screen.dart';
+import 'package:path/path.dart';
 
 class BairrosScreen extends StatefulWidget {
   @override
@@ -23,7 +24,6 @@ class _BairrosScreenState extends State<BairrosScreen> {
   Future<List<Map<String, dynamic>>> _initializeBairros() async {
     final dbHelper = DatabaseHelper();
 
-    // Inicializa a lista de bairros apenas se ainda não estiverem no banco
     final existingBairros = await dbHelper.getBairros();
 
     if (existingBairros.isEmpty) {
@@ -47,7 +47,6 @@ class _BairrosScreenState extends State<BairrosScreen> {
 
     final bairrosFromDB = await dbHelper.getBairros();
 
-    // Remover bairros duplicados
     final bairrosUnicos = <String, Map<String, dynamic>>{};
     for (var bairro in bairrosFromDB) {
       bairrosUnicos[bairro['nome']] = bairro;
@@ -84,6 +83,12 @@ class _BairrosScreenState extends State<BairrosScreen> {
     return Scaffold(
       body: Column(
         children: [
+          Text(
+            'Bairros',
+            style: TextStyle(fontSize: 20.0, 
+            fontWeight: FontWeight.bold),
+            textDirection: TextDirection.ltr,
+          ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(

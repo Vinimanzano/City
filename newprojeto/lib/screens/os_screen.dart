@@ -161,10 +161,9 @@ class _OsScreenState extends State<OsScreen> {
                           border: OutlineInputBorder(),
                         ),
                         items: <String>[
-                          'Iluminação',
                           'Urbanismo',
-                          'Ruas',
-                          'Construção'
+                          'Vias(ruas, estradas)',
+                          'Infraestruturas'
                         ].map((String value) {
                           return DropdownMenuItem<String>(
                             value: value,

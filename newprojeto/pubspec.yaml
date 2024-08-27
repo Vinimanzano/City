@@ -41,6 +41,7 @@ dependencies:
   video_player: ^2.9.1
   http: ^1.2.2
   adaptive_theme: ^3.0.0
+  mailer: ^6.1.2
 
 dev_dependencies:
   flutter_test:

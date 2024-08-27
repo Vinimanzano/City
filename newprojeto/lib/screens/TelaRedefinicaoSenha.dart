@@ -7,24 +7,34 @@ class TelaRedefinicaoSenha extends StatefulWidget {
 
 class _TelaRedefinicaoSenhaState extends State<TelaRedefinicaoSenha> {
   final _formKey = GlobalKey<FormState>();
+  String _codigo = '';
   String _novaSenha = '';
   String _confirmarSenha = '';
   bool _obscureText = true;
 
-  void _definirNovaSenha() {
+  void _definirNovaSenha() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
+      
+      // Aqui você deve implementar a verificação do código com o backend.
+      // Para simplicidade, assumimos que a verificação do código é bem-sucedida.
+      // Adicione sua lógica de verificação do código e alteração de senha aqui.
+      
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Senha redefinida com sucesso!')),
       );
-      Navigator.pop(context);
+      
+      // Navegar para a tela de login
+      Navigator.pushReplacementNamed(context, '/login'); // Ajuste o nome da rota conforme necessário
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: null, // Define o AppBar como null para removê-lo
+      appBar: AppBar(
+        title: Text('Redefinir Senha'),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Center(
@@ -33,6 +43,23 @@ class _TelaRedefinicaoSenhaState extends State<TelaRedefinicaoSenha> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+                TextFormField(
+                  decoration: InputDecoration(
+                    labelText: 'Código de Verificação',
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Por favor, insira o código de verificação';
+                    }
+                    // Adicione a lógica para validar o código, se necessário.
+                    return null;
+                  },
+                  onSaved: (value) {
+                    _codigo = value!;
+                  },
+                ),
+                SizedBox(height: 16.0),
                 TextFormField(
                   decoration: InputDecoration(
                     labelText: 'Nova Senha',
@@ -79,9 +106,6 @@ class _TelaRedefinicaoSenhaState extends State<TelaRedefinicaoSenha> {
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Por favor, confirme sua senha';
-                    }
-                    if (value != _novaSenha) {
-                      return 'As senhas não coincidem';
                     }
                     return null;
                   },
