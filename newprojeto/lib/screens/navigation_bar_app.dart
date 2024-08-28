@@ -19,14 +19,13 @@ class _NavigationBarAppState extends State<NavigationBarApp> {
   int _selectedIndex = 0;
 
   final List<Widget> _pages = [
-    HomeScreen(username: 'Carlinho'),
+    HomeScreen(username: 'User'),
     BairrosScreen(),
     ProfileScreen(),
     MessagesScreen(),
   ];
 
   Future<bool> _checkForUnsavedChanges() async {
-    // Implementação para verificar se há alterações não salvas
     return true;
   }
 

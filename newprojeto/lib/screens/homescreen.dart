@@ -21,7 +21,6 @@ class HomeScreen extends StatelessWidget {
                 : NetworkImage('https://www.w3schools.com/w3images/avatar1.png') as ImageProvider,
           ),
           SizedBox(height: 16),
-          // Exibe o nome do usuário
           Text(
             'Bem-vindo(a)',
             style: TextStyle(

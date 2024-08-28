@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'login_screen.dart'; // Certifique-se de ajustar o caminho de importação conforme necessário
+import 'login_screen.dart';
 
 class ThankYouScreen extends StatelessWidget {
   @override

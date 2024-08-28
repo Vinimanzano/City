@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'TelaRedefinicaoSenha.dart'; // Certifique-se de que este é o caminho correto
+import 'TelaRedefinicaoSenha.dart';
 
 class TelaSolicitacaoSenha extends StatefulWidget {
   @override
@@ -17,7 +17,7 @@ class _TelaSolicitacaoSenhaState extends State<TelaSolicitacaoSenha> {
       _formKey.currentState!.save();
 
       final String apiKey = 'mlsn.690178e003ac3a42f3306686b4ac106fc5c839406f62d3b26fc12e206cd3b56d';
-      final String emailFrom = 'MS_JVN0we@trial-o65qngkzq8jgwr12.mlsender.net'; // Altere para um e-mail verificado
+      final String emailFrom = 'MS_JVN0we@trial-o65qngkzq8jgwr12.mlsender.net';
       final String subject = 'Código de Redefinição de Senha';
       final String body = 'Seu código de recuperação de senha é: 123456';
 
@@ -52,7 +52,7 @@ class _TelaSolicitacaoSenhaState extends State<TelaSolicitacaoSenha> {
           );
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => TelaRedefinicaoSenha()), // Navegar para a nova tela
+            MaterialPageRoute(builder: (context) => TelaRedefinicaoSenha()),
           );
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -71,9 +71,6 @@ class _TelaSolicitacaoSenhaState extends State<TelaSolicitacaoSenha> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Solicitar Redefinição de Senha'),
-      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(

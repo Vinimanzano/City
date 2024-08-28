@@ -97,7 +97,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final textColor = isDarkMode ? Colors.white : Colors.black;
 
     return Scaffold(
-      body: Center(  // Centraliza o conteúdo no meio da tela
+      body: Center(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16.0),
           child: Form(
